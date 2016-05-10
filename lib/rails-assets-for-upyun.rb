@@ -1,7 +1,7 @@
 require 'rest-client'
 require 'uri'
 class RailsAssetsForUpyun
-  def self.publish(bucket, username, password, bucket_path="/", localpath='public', upyun_ap="http://v0.api.upyun.com")
+  def self.publish(bucket, username, password, bucket_path="/", localpath='public', upyun_ap="http://v0.api.upyun.com", rejectpath = '')
     # http://stackoverflow.com/questions/357754/can-i-traverse-symlinked-directories-in-ruby-with-a-glob
 
     puts "version 0.2 -- Start time...#{Time.now}"
@@ -10,7 +10,16 @@ class RailsAssetsForUpyun
     request_count = 0
     request_duration = 10
     request_maxtime = 0.0
-    Dir[File.join localpath, "**{,/*/**}/*"].select{|f| File.file? f}.each do |file|
+    
+    file_array = []
+    
+    if rejectpath.blank?
+      file_array = Dir[File.join localpath, "**{,/*/**}/*"]
+    else
+      file_array = Dir[File.join localpath, "**{,/*/**}/*"].reject{|f| f[rejectpath]}
+    end
+    
+    file_array.select{|f| File.file? f}.each do |file|
       url = URI.encode "/#{bucket}#{bucket_path}#{file[localpath.to_s.size + 1 .. -1]}"
       date = Time.now.httpdate
 
