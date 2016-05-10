@@ -4,7 +4,7 @@ class RailsAssetsForUpyun
   def self.publish(bucket, username, password, rejectpath = '', bucket_path="/", localpath='public', upyun_ap="http://v0.api.upyun.com")
     # http://stackoverflow.com/questions/357754/can-i-traverse-symlinked-directories-in-ruby-with-a-glob
 
-    puts "version 0.2 -- Start time...#{Time.now}"
+    puts "version 0.2 -- Start time...#{Time.now}, reject: #{rejectpath}"
     last_request = nil
     duration = 1.0/20.0
     request_count = 0
@@ -18,6 +18,8 @@ class RailsAssetsForUpyun
     else
       file_array = Dir[File.join localpath, "**{,/*/**}/*"].reject{|f| f[rejectpath]}
     end
+    
+    puts "开始上传#{file_array.count}个文件"
     
     file_array.select{|f| File.file? f}.each do |file|
       url = URI.encode "/#{bucket}#{bucket_path}#{file[localpath.to_s.size + 1 .. -1]}"
