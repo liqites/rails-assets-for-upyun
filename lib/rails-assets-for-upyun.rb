@@ -13,7 +13,7 @@ class RailsAssetsForUpyun
     
     file_array = []
     
-    if rejectpath.blank?
+    if !rejectpath.is_a?(Regexp) && rejectpath.blank?
       file_array = Dir[File.join localpath, "**{,/*/**}/*"]
     else
       file_array = Dir[File.join localpath, "**{,/*/**}/*"].reject{|f| f[rejectpath]}
