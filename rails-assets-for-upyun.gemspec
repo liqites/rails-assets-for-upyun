@@ -15,4 +15,5 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
 
   s.add_dependency "rest-client", [">= 1.6.7"]
+  s.add_dependency "ruby-progressbar", [">=1.7.0"]
 end
