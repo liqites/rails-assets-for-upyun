@@ -1,7 +1,7 @@
 require 'rest-client'
 require 'uri'
 
-class UpyunAssetsException < StandardException
+class UpyunAssetsError < StandardError
 
 end
 
@@ -33,7 +33,7 @@ class RailsAssetsForUpyun
     args = options.reverse_merge(default)
 
     default.keys.each do |k|
-      raise UpyunAssetsException, "argument #{k.to_s} is blank" if args[k].blank?
+      raise UpyunAssetsError, "argument #{k.to_s} is blank" if args[k].blank?
     end
 
     self.bucket = args[:bucket]
